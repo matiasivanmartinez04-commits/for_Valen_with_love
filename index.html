@@ -43,22 +43,24 @@
             pointer-events: none; /* Permite que los clics pasen a través si fuera necesario */
         }
 
-        /* Texto principal */
+        /* Texto principal (Modificado: más grande y con contorno) */
         h1 {
             font-family: 'Dancing Script', cursive;
-            font-size: 7vw;
+            font-size: 9vw; /* Aumentado */
             color: #ffd700; /* Color dorado */
-            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.6);
+            -webkit-text-stroke: 2px #000000; /* Contorno negro */
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.8); /* Sombra reforzada */
             margin: 0;
             line-height: 1.2;
         }
 
-        /* Texto secundario */
+        /* Texto secundario (Modificado: más grande y con contorno) */
         h2 {
-            font-size: 3vw;
+            font-size: 4vw; /* Aumentado */
             color: #ffffff;
-            font-weight: 400;
-            text-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
+            font-weight: 600; /* Un poco más grueso para que el contorno se vea bien */
+            -webkit-text-stroke: 1.5px #000000; /* Contorno negro */
+            text-shadow: 0 3px 10px rgba(0, 0, 0, 0.8); /* Sombra reforzada */
             margin-top: 15px;
             letter-spacing: 2px;
         }
@@ -77,10 +79,10 @@
         /* Estilo base para cada mensaje que cae */
         .falling-message {
             position: absolute;
-            color: rgba(255, 255, 255, 0.7); /* Blanco un poco transparente */
+            color: rgba(255, 255, 255, 0.85); /* Blanco un poco más opaco para que resalte más */
             white-space: nowrap;
             font-weight: 600;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9); /* Sombra un poco más fuerte para los mensajes */
             animation: fall linear forwards;
             top: -100px; /* Empieza arriba, fuera de la pantalla */
         }
@@ -103,10 +105,10 @@
             }
         }
 
-        /* Adaptabilidad para celulares (Pantallas más chicas) */
+        /* Adaptabilidad para celulares (Pantallas más chicas - Modificado para mantener proporciones grandes) */
         @media (max-width: 768px) {
-            h1 { font-size: 13vw; }
-            h2 { font-size: 6vw; }
+            h1 { font-size: 15vw; }
+            h2 { font-size: 7vw; }
         }
     </style>
 </head>
@@ -124,7 +126,6 @@
     <!-- Script de JavaScript para generar la lluvia -->
     <script>
         // Array con todos los mensajes que querés que caigan
-        // Podés agregar, modificar o quitar los que quieras.
         const mensajes = [
             "¡Éxitos en esta nueva etapa! - Sofi",
             "¡Lo lograste! - Valen",
@@ -134,6 +135,9 @@
             "¡Que orgullo gigante! - Mamá"
         ];
 
+        // Array con los iconos especiales (incluye vóley, libros y el chiste de River con hielo)
+        const iconos = ['❤️', '🍷', '🛵', '🐈', '🐶', '🌸', '🧉', '🪩', '🏎️', '🥐', '🐉', '⚔️', '🏐', '📚', '🤍❤️🤍🧊'];
+
         const container = document.getElementById('rain-container');
 
         // Función para crear un solo mensaje que cae
@@ -141,8 +145,20 @@
             const drop = document.createElement('div');
             drop.classList.add('falling-message');
             
-            // Selecciona un mensaje al azar de la lista
-            drop.innerText = mensajes[Math.floor(Math.random() * mensajes.length)];
+            // Decidir al azar si cae un texto o un icono (20% de probabilidad de icono)
+            if (Math.random() < 0.20) {
+                // Selecciona un icono al azar
+                drop.innerText = iconos[Math.floor(Math.random() * iconos.length)];
+                // Los iconos un poco más grandes para que se vean bien (entre 2rem y 3.5rem)
+                const fontSize = Math.random() * 1.5 + 2; 
+                drop.style.fontSize = fontSize + 'rem';
+            } else {
+                // Selecciona un mensaje al azar de la lista
+                drop.innerText = mensajes[Math.floor(Math.random() * mensajes.length)];
+                // Tamaño de letra al azar (entre 1rem y 2.2rem)
+                const fontSize = Math.random() * 1.2 + 1; 
+                drop.style.fontSize = fontSize + 'rem';
+            }
 
             // Posición horizontal al azar (entre el 2% y el 90% de la pantalla para que no se corte)
             const startPos = Math.random() * 88 + 2; 
@@ -151,10 +167,6 @@
             // Duración de la caída al azar (entre 8 y 18 segundos)
             const duration = Math.random() * 10 + 8; 
             drop.style.animationDuration = duration + 's';
-
-            // Tamaño de letra al azar (entre 1rem y 2.2rem)
-            const fontSize = Math.random() * 1.2 + 1; 
-            drop.style.fontSize = fontSize + 'rem';
 
             // Agrega el mensaje a la pantalla
             container.appendChild(drop);
