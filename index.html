@@ -31,24 +31,24 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* Contenedor del texto central (siempre por encima de la lluvia) */
+        /* Contenedor del texto central */
         .center-container {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             text-align: center;
-            z-index: 10; /* Lo mantiene por encima de los mensajes que caen */
+            z-index: 10; 
             width: 90%;
-            pointer-events: none; /* Permite que los clics pasen a través si fuera necesario */
+            pointer-events: none; 
         }
 
         /* Texto principal */
         h1 {
             font-family: 'Dancing Script', cursive;
             font-size: 9vw; 
-            color: #ffd700; /* Color dorado */
-            -webkit-text-stroke: 2px #000000; /* Contorno negro */
+            color: #ffd700; 
+            -webkit-text-stroke: 2px #000000; 
             text-shadow: 0 5px 15px rgba(0, 0, 0, 0.8); 
             margin: 0;
             line-height: 1.2;
@@ -59,7 +59,7 @@
             font-size: 4vw; 
             color: #ffffff;
             font-weight: 600; 
-            -webkit-text-stroke: 1.5px #000000; /* Contorno negro */
+            -webkit-text-stroke: 1.5px #000000; 
             text-shadow: 0 3px 10px rgba(0, 0, 0, 0.8); 
             margin-top: 15px;
             letter-spacing: 2px;
@@ -72,7 +72,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 1; /* Por debajo del texto central */
+            z-index: 1; 
             pointer-events: none;
         }
 
@@ -84,7 +84,7 @@
             font-weight: 600;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9); 
             animation: fall linear forwards;
-            top: -100px; /* Empieza arriba, fuera de la pantalla */
+            top: -100px; 
         }
 
         /* Animación de caída */
@@ -94,13 +94,13 @@
                 opacity: 0; 
             }
             5% { 
-                opacity: 1; /* Aparece suavemente */
+                opacity: 1; 
             }
             90% { 
                 opacity: 1; 
             }
             100% { 
-                transform: translateY(calc(100vh + 200px)); /* Termina abajo, fuera de la pantalla */
+                transform: translateY(calc(100vh + 200px)); 
                 opacity: 0; 
             }
         }
@@ -114,18 +114,14 @@
 </head>
 <body>
 
-    <!-- Capa de la lluvia de mensajes -->
     <div id="rain-container"></div>
 
-    <!-- Capa del mensaje central -->
     <div class="center-container">
         <h1>¡Felicidades por recibirte!</h1>
         <h2>Te queremos mucho</h2>
     </div>
 
-    <!-- Script de JavaScript para generar la lluvia -->
     <script>
-        // Array con todos los mensajes que querés que caigan
         const mensajes = [
             "¡Éxitos en esta nueva etapa! - Sofi",
             "¡Lo lograste! - Valen",
@@ -135,18 +131,16 @@
             "¡Que orgullo gigante! - Mamá"
         ];
 
-        // Array con los iconos especiales 
-        const iconos = ['❤️', '🍷', '🛵', '🐈', '🐶', '🌸', '🧉', '🏎️', '🥐', '🐉', '⚔️', '🏐', '📚', '🤍❤️🤍🧊'];
+        // Bola de disco eliminada, usamos confeti en su lugar. Escudo de River con círculos.
+        const iconos = ['❤️', '🍷', '🛵', '🐈', '🐶', '🌸', '🧉', '🎉', '🏎️', '🥐', '🐉', '⚔️', '🏐', '📚', '⚪🔴⚪🧊'];
 
         const container = document.getElementById('rain-container');
 
-        // Función para crear un solo mensaje que cae
         function crearMensaje() {
             const drop = document.createElement('div');
             drop.classList.add('falling-message');
             
-            // Decidir al azar si cae un texto o un icono (20% de probabilidad de icono)
-            if (Math.random() < 0.20) {
+            if (Math.random() < 0.18) {
                 drop.innerText = iconos[Math.floor(Math.random() * iconos.length)];
                 const fontSize = Math.random() * 1.5 + 2; 
                 drop.style.fontSize = fontSize + 'rem';
@@ -156,30 +150,23 @@
                 drop.style.fontSize = fontSize + 'rem';
             }
 
-            // CORRECCIÓN: Posición horizontal ajustada (entre el 0% y el 65%)
-            // Esto evita que los textos largos se acumulen a la derecha
             const startPos = Math.random() * 65; 
             drop.style.left = startPos + 'vw';
 
-            // Duración de la caída al azar (entre 8 y 18 segundos)
             const duration = Math.random() * 10 + 8; 
             drop.style.animationDuration = duration + 's';
 
-            // Agrega el mensaje a la pantalla
             container.appendChild(drop);
 
-            // Elimina el mensaje del HTML una vez que termina de caer
             setTimeout(() => {
                 drop.remove();
             }, duration * 1000);
         }
 
-        // Generar algunos mensajes iniciales para que la pantalla no esté vacía al cargar
         for(let i=0; i < 15; i++) {
             setTimeout(crearMensaje, Math.random() * 3000);
         }
 
-        // Configura el intervalo para seguir creando mensajes continuamente
         setInterval(crearMensaje, 600);
     </script>
 </body>
